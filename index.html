@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>{{PERSON_FULL_NAME}} | {{COMPANY_NAME}}</title>
-    <meta name="description" content="{{PERSON_FULL_NAME}} - {{PERSON_TITLE}}, {{COMPANY_NAME}}. ">
+    <title>Daniel Molina &mdash; Royal Remodel</title>
+    <meta name="description" content="Daniel Molina, Royal Remodel. Residential remodeling - Kansas City Metro.">
 
     <!-- PWA / Home Screen support -->
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -13,22 +13,29 @@
     <link rel="manifest" href="manifest.json">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#1A1A1A">
-    <link rel="apple-touch-icon" href="logo.svg">
-    <link rel="icon" href="logo.svg">
+    <link rel="apple-touch-icon" href="logo.png">
+    <link rel="icon" href="logo.png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
-            --accent: {{COMPANY_ACCENT_COLOR}};
-            --accent-rgb: {{COMPANY_ACCENT_RGB}};
+            /* Brand colors live on the button + the QR only. The card stays clean. */
+            --gold: #B08D4C;
+            --gold-rgb: 176, 141, 76;
+            --gold-lt: #E6C983;
+            --gold-lt-rgb: 230, 201, 131;
+            --split: linear-gradient(100deg, var(--gold) 0%, var(--gold-lt) 100%);
+            --navy: #0D141D;
+
             --bg: #1A1A1A;
             --text-primary: #FFFFFF;
-            --text-secondary: #C7CCD4;
+            --text-secondary: #C9CCD1;
             --text-muted: #808285;
+            --hairline: rgba(255, 255, 255, 0.10);
         }
 
         body {
@@ -44,14 +51,13 @@
             overflow-x: hidden;
         }
 
-        /* Subtle grid background — adjust opacity/size per brand */
         body::before {
             content: '';
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
             background-image:
-                linear-gradient(rgba(var(--accent-rgb), 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(var(--accent-rgb), 0.03) 1px, transparent 1px);
+                linear-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.018) 1px, transparent 1px);
             background-size: 40px 40px;
             pointer-events: none;
             z-index: 0;
@@ -62,105 +68,113 @@
             z-index: 1;
             max-width: 420px;
             width: 100%;
-            background: linear-gradient(180deg, #222222 0%, var(--bg) 100%);
-            border: 1px solid rgba(var(--accent-rgb), 0.15);
+            background: linear-gradient(180deg, #232323 0%, var(--bg) 100%);
+            border: 1px solid var(--hairline);
             border-radius: 16px;
             padding: 40px 32px;
             text-align: center;
-            box-shadow:
-                0 0 40px rgba(var(--accent-rgb), 0.06),
-                0 20px 60px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
         }
 
-        /* Top accent line */
+        /* One restrained brand cue on the top edge */
         .card::before {
             content: '';
             position: absolute;
             top: 0; left: 50%;
             transform: translateX(-50%);
-            width: 60%;
+            width: 58%;
             height: 2px;
-            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            background: var(--split);
             border-radius: 2px;
         }
 
         .logo {
-            width: 120px;
-            height: 120px;
-            margin: 0 auto 24px;
-            border-radius: 12px;
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 22px;
+            border-radius: 50%;
             overflow: hidden;
         }
 
-        .logo img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
+        .logo img { width: 100%; height: 100%; object-fit: contain; }
 
         .name {
             font-family: 'Orbitron', sans-serif;
             font-weight: 700;
-            font-size: 22px;
+            font-size: 21px;
             color: var(--text-primary);
-            letter-spacing: 1px;
-            margin-bottom: 6px;
-        }
-
-        .title {
-            font-weight: 400;
-            font-size: 14px;
-            color: var(--text-secondary);
-            margin-bottom: 4px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
         }
 
         .company {
             font-weight: 500;
-            font-size: 15px;
-            color: var(--accent);
-            margin-bottom: 20px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
         }
 
+        /* Hairline rule with a small crown ornament at center */
         .divider {
-            width: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin: 0 auto 18px;
+            width: 190px;
+        }
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
             height: 1px;
-            background: linear-gradient(90deg, transparent, var(--accent), transparent);
-            margin: 0 auto 20px;
+            background: var(--hairline);
+        }
+        .crown {
+            width: 22px;
+            height: 22px;
+            flex-shrink: 0;
+            filter: drop-shadow(0 0 6px rgba(var(--gold-rgb), 0.45));
         }
 
         .tagline {
             font-family: 'Orbitron', sans-serif;
             font-weight: 500;
-            font-size: 11px;
-            color: var(--accent);
-            letter-spacing: 2px;
+            font-size: 12px;
+            letter-spacing: 2.5px;
             text-transform: uppercase;
-            margin-bottom: 16px;
+            color: var(--text-primary);
+            margin-bottom: 14px;
         }
 
         .bio {
-            font-size: 14px;
-            line-height: 1.6;
+            font-size: 13.5px;
+            line-height: 1.65;
             color: var(--text-secondary);
             font-weight: 300;
-            margin-bottom: 28px;
-            padding: 0 8px;
+            margin-bottom: 26px;
+            padding: 0 6px;
         }
+
+        .bio .area { color: var(--text-muted); font-size: 12.5px; }
 
         .contact-links {
             display: flex;
             flex-direction: column;
             gap: 12px;
-            margin-bottom: 28px;
+            margin-bottom: 22px;
         }
 
+        /* Neutral rows - clean, no per-row color */
         .contact-link {
             display: flex;
             align-items: center;
             gap: 12px;
-            padding: 10px 16px;
-            background: rgba(var(--accent-rgb), 0.06);
-            border: 1px solid rgba(var(--accent-rgb), 0.1);
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--hairline);
             border-radius: 8px;
             color: var(--text-primary);
             text-decoration: none;
@@ -170,65 +184,67 @@
         }
 
         .contact-link:hover {
-            background: rgba(var(--accent-rgb), 0.12);
-            border-color: rgba(var(--accent-rgb), 0.25);
+            background: rgba(255, 255, 255, 0.07);
+            border-color: rgba(255, 255, 255, 0.22);
         }
 
-        .contact-link svg {
-            width: 18px;
-            height: 18px;
-            flex-shrink: 0;
-            fill: var(--accent);
-        }
+        .contact-link svg { width: 18px; height: 18px; flex-shrink: 0; fill: var(--text-secondary); }
+        .contact-link span { color: var(--text-secondary); }
 
-        .contact-link span {
-            color: var(--text-secondary);
-        }
+        .social { display: flex; justify-content: center; gap: 12px; margin-bottom: 24px; }
 
-        .btn-row {
+        .social a {
             display: flex;
-            gap: 10px;
-            margin-bottom: 24px;
+            align-items: center;
+            justify-content: center;
+            width: 46px;
+            height: 46px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--hairline);
+            transition: all 0.2s ease;
         }
 
+        .social a:hover { background: rgba(255, 255, 255, 0.08); transform: translateY(-2px); }
+        .social svg { width: 21px; height: 21px; fill: var(--text-secondary); }
+        .social a:hover svg { fill: var(--text-primary); }
+
+        /* SINGLE action: show the QR. No direct .vcf link - standing card standard.
+           Text is navy, not white: white on gold fails contrast and reads washed out. */
         .save-btn {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            padding: 14px 24px;
-            border: none;
-            border-radius: 8px;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            letter-spacing: 0.5px;
             justify-content: center;
-        }
-
-        .save-btn {
+            gap: 10px;
             width: 100%;
-            background: var(--accent);
-            color: var(--text-primary);
+            padding: 16px 24px;
+            border: none;
+            border-radius: 10px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            background: var(--split);
+            color: var(--navy);
+            transition: all 0.2s ease;
+            margin-bottom: 22px;
         }
 
         .save-btn:hover {
-            filter: brightness(0.85);
+            filter: brightness(1.08);
             transform: translateY(-1px);
-            box-shadow: 0 4px 20px rgba(var(--accent-rgb), 0.3);
+            box-shadow: 0 6px 24px rgba(var(--gold-rgb), 0.28);
         }
 
-
         .save-btn:active { transform: translateY(0); }
-        .save-btn svg { width: 18px; height: 18px; fill: var(--text-primary); }
+        .save-btn svg { width: 19px; height: 19px; fill: var(--navy); }
 
-        /* QR Code overlay */
         .qr-overlay {
             display: none;
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.85);
+            background: rgba(0, 0, 0, 0.9);
             z-index: 100;
             align-items: center;
             justify-content: center;
@@ -238,31 +254,39 @@
         .qr-overlay.active { display: flex; }
 
         .qr-modal {
-            background: var(--bg);
-            border: 1px solid rgba(var(--accent-rgb), 0.2);
-            border-radius: 16px;
-            padding: 32px;
+            background: #202020;
+            border: 1px solid var(--hairline);
+            border-radius: 18px;
+            padding: 28px;
             text-align: center;
-            max-width: 320px;
+            max-width: 340px;
             width: 100%;
         }
 
         .qr-modal h3 {
             font-family: 'Orbitron', sans-serif;
-            font-size: 14px;
-            color: var(--accent);
-            letter-spacing: 1px;
-            margin-bottom: 8px;
+            font-size: 13px;
+            letter-spacing: 2px;
+            margin-bottom: 6px;
+            color: var(--text-primary);
         }
 
-        .qr-modal p { font-size: 12px; color: var(--text-muted); margin-bottom: 20px; }
-        .qr-modal svg { width: 200px; height: 200px; margin: 0 auto 20px; display: block; }
+        .qr-modal p { font-size: 12px; color: var(--text-muted); margin-bottom: 18px; }
+
+        .qr-frame {
+            background: #FFFFFF;
+            border-radius: 14px;
+            padding: 10px;
+            margin: 0 auto 18px;
+            width: 250px;
+        }
+        .qr-frame img { width: 100%; height: auto; display: block; }
 
         .qr-close {
             background: none;
-            border: 1px solid rgba(var(--accent-rgb), 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.18);
             color: var(--text-secondary);
-            padding: 10px 24px;
+            padding: 10px 26px;
             border-radius: 8px;
             font-family: 'Montserrat', sans-serif;
             font-size: 13px;
@@ -270,103 +294,91 @@
             transition: all 0.2s ease;
         }
 
-        .qr-close:hover { border-color: var(--accent); color: var(--text-primary); }
+        .qr-close:hover { border-color: rgba(255, 255, 255, 0.4); color: var(--text-primary); }
 
         .footer { font-size: 11px; color: var(--text-muted); }
+        .footer a { color: var(--text-secondary); text-decoration: none; }
 
         @media (max-width: 480px) {
             .card { padding: 32px 24px; }
-            .name { font-size: 20px; }
-            .tagline { font-size: 10px; }
-            .btn-row { flex-direction: column; }
+            .name { font-size: 18px; letter-spacing: 1px; }
+            .tagline { font-size: 11px; letter-spacing: 2px; }
         }
     </style>
 </head>
 <body>
     <div class="card">
         <div class="logo">
-            <img src="logo.svg" alt="{{COMPANY_NAME}}">
+            <img src="logo.png" alt="Royal Remodel">
         </div>
 
-        <div class="name">{{PERSON_FULL_NAME}}</div>
-        <div class="title">{{PERSON_TITLE}}</div>
-        <div class="company">{{COMPANY_NAME}}</div>
+        <div class="name">Daniel Molina</div>
+        <div class="company">Royal Remodel</div>
 
-        <div class="divider"></div>
+        <div class="divider">
+            <svg class="crown" viewBox="0 0 24 24" aria-hidden="true">
+                <defs>
+                    <linearGradient id="goldgrad" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0%" stop-color="#8A6A2A"/>
+                        <stop offset="45%" stop-color="#E6C983"/>
+                        <stop offset="100%" stop-color="#A8823F"/>
+                    </linearGradient>
+                </defs>
+                <path fill="url(#goldgrad)" d="M2 7 L4.5 11.5 L7 4.5 L9.7 10 L12 2.5 L14.3 10 L17 4.5 L19.5 11.5 L22 7 L20.3 18.5 L3.7 18.5 Z"/>
+                <rect x="3.9" y="14.6" width="16.2" height="1.15" fill="#1A1A1A" fill-opacity="0.55"/>
+            </svg>
+        </div>
 
-        <div class="tagline">{{COMPANY_TAGLINE}}</div>
+        <div class="tagline">Built to the Royal Standard</div>
 
-        <div class="bio">{{COMPANY_DESCRIPTOR}}</div>
+        <div class="bio">
+            Residential Remodeling<br>
+            <span class="area">Kansas City Metro</span>
+        </div>
 
         <div class="contact-links">
-            <a href="tel:{{PERSON_PHONE_E164}}" class="contact-link">
+            <a href="tel:+19133135422" class="contact-link">
                 <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
-                <span>{{PERSON_PHONE_DISPLAY}}</span>
+                <span>(913) 313-5422</span>
             </a>
-            <!-- OFFICE_PHONE_START -->
-            <a href="tel:{{COMPANY_OFFICE_PHONE_E164}}" class="contact-link">
-                <svg viewBox="0 0 24 24"><path d="M12 7V3H2v18h20V7H12zm-2 12H4v-2h6v2zm0-4H4v-2h6v2zm0-4H4V9h6v2zm0-4H4V5h6v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z"/></svg>
-                <span>{{COMPANY_OFFICE_PHONE_DISPLAY}}</span>
-            </a>
-            <!-- OFFICE_PHONE_END -->
-
-            <a href="mailto:{{PERSON_EMAIL}}" class="contact-link">
+            <a href="mailto:Contact@RoyalRemodelKC.com" class="contact-link">
                 <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-                <span>{{PERSON_EMAIL}}</span>
+                <span>Contact@RoyalRemodelKC.com</span>
             </a>
-
-            <!-- WEBSITE_START -->
-            <a href="{{COMPANY_WEBSITE_URL}}" target="_blank" rel="noopener" class="contact-link">
-                <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm6.93 6h-2.95a15.65 15.65 0 00-1.38-3.56A8.03 8.03 0 0118.92 8zM12 4.04c.83 1.2 1.48 2.53 1.91 3.96h-3.82c.43-1.43 1.08-2.76 1.91-3.96zM4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2s.06 1.34.14 2H4.26zm.82 2h2.95c.32 1.25.78 2.45 1.38 3.56A7.987 7.987 0 015.08 16zm2.95-8H5.08a7.987 7.987 0 014.33-3.56A15.65 15.65 0 008.03 8zM12 19.96c-.83-1.2-1.48-2.53-1.91-3.96h3.82c-.43 1.43-1.08 2.76-1.91 3.96zM14.34 14H9.66c-.09-.66-.16-1.32-.16-2s.07-1.35.16-2h4.68c.09.65.16 1.32.16 2s-.07 1.34-.16 2zm.25 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95a8.03 8.03 0 01-4.33 3.56zM16.36 14c.08-.66.14-1.32.14-2s-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2s-.1 1.36-.26 2h-3.38z"/></svg>
-                <span>{{COMPANY_WEBSITE_DISPLAY}}</span>
-            </a>
-            <!-- WEBSITE_END -->
-            <!-- OFFICE_ADDRESS_START -->
-            <a href="{{COMPANY_OFFICE_ADDR_MAPS_URL}}" target="_blank" rel="noopener" class="contact-link">
-                <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-                <span>{{COMPANY_OFFICE_ADDR}}</span>
-            </a>
-            <!-- OFFICE_ADDRESS_END -->
-            <!-- BOOKING_LINK_START -->
-            <a href="{{PERSON_BOOKING_URL}}" target="_blank" rel="noopener" class="contact-link">
-                <svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg>
-                <span>Book a meeting</span>
-            </a>
-            <!-- BOOKING_LINK_END -->
         </div>
 
-        <!-- CARD STANDARD: exactly ONE button, and it opens the QR.
-             Do NOT reintroduce a "Save Contact" button or a direct .vcf link.
-             The QR + the NFC chip are the save mechanism. -->
-        <div class="btn-row">
-            <button class="save-btn" onclick="toggleQR()">
-                <svg viewBox="0 0 24 24"><path d="M3 11h8V3H3v8zm2-6h4v4H5V5zm8-2v8h8V3h-8zm6 6h-4V5h4v4zM3 21h8v-8H3v8zm2-6h4v4H5v-4zm13-2h-2v3h-3v2h3v3h2v-3h3v-2h-3v-3zm-3 8v-2h-2v2h2zm4 0v-2h-2v2h2z"/></svg>
-                Save My Contact
-            </button>
+        <div class="social">
+            <a href="https://www.facebook.com/share/1CMpNzNVkh/" target="_blank" rel="noopener" aria-label="Facebook">
+                <svg viewBox="0 0 24 24"><path d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.96.93-1.96 1.89v2.25h3.33l-.53 3.49h-2.8V24C19.61 23.1 24 18.1 24 12.07z"/></svg>
+            </a>
+            <a href="https://www.instagram.com/royalremodel" target="_blank" rel="noopener" aria-label="Instagram">
+                <svg viewBox="0 0 24 24"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41-.56-.22-.96-.48-1.38-.9-.42-.42-.68-.82-.9-1.38-.16-.42-.36-1.06-.41-2.23C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.17 8.8 2.16 12 2.16M12 0C8.74 0 8.33.01 7.05.07c-1.28.06-2.15.26-2.91.56-.79.31-1.46.72-2.13 1.38A5.9 5.9 0 0 0 .63 4.14c-.3.76-.5 1.63-.56 2.91C.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.28.26 2.15.56 2.91.31.79.72 1.46 1.38 2.13a5.9 5.9 0 0 0 2.13 1.38c.76.3 1.63.5 2.91.56C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c1.28-.06 2.15-.26 2.91-.56a5.9 5.9 0 0 0 2.13-1.38 5.9 5.9 0 0 0 1.38-2.13c.3-.76.5-1.63.56-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.06-1.28-.26-2.15-.56-2.91a5.9 5.9 0 0 0-1.38-2.13A5.9 5.9 0 0 0 19.86.63c-.76-.3-1.63-.5-2.91-.56C15.67.01 15.26 0 12 0zm0 5.84a6.16 6.16 0 1 0 0 12.32 6.16 6.16 0 0 0 0-12.32zm0 10.16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm7.85-10.4a1.44 1.44 0 1 1-2.88 0 1.44 1.44 0 0 1 2.88 0z"/></svg>
+            </a>
         </div>
 
-        <div class="footer">Powered by <a href="https://www.sharkitectdigital.com" target="_blank" rel="noopener" style="color:#29ABE2;text-decoration:none;">Sharkitect</a></div>
+        <button class="save-btn" onclick="toggleQR()">
+            <svg viewBox="0 0 24 24"><path d="M3 11h8V3H3v8zm2-6h4v4H5V5zm8-2v8h8V3h-8zm6 6h-4V5h4v4zM3 21h8v-8H3v8zm2-6h4v4H5v-4zm13-2h-2v3h-3v2h3v3h2v-3h3v-2h-3v-3zm-3 8v-2h-2v2h2zm4 0v-2h-2v2h2z"/></svg>
+            Save My Contact
+        </button>
+
+        <div class="footer">Powered by <a href="https://www.sharkitectdigital.com" target="_blank" rel="noopener">Sharkitect</a></div>
     </div>
 
-    <!-- QR Code Overlay -->
     <div class="qr-overlay" id="qrOverlay" onclick="toggleQR()">
         <div class="qr-modal" onclick="event.stopPropagation()">
-            <h3>SCAN TO CONNECT</h3>
+            <h3>SCAN TO SAVE</h3>
             <p>Point your camera at the code</p>
-            <img src="qr-code.svg" alt="QR code" style="width:220px;height:220px;display:block;margin:0 auto 20px;border-radius:8px;"/>
+            <div class="qr-frame">
+                <img src="qr-code.png" alt="Scan to save Daniel Molina's contact">
+            </div>
             <button class="qr-close" onclick="toggleQR()">Close</button>
         </div>
     </div>
 
     <script>
-        // saveContact() removed 2026-07-27 per the card standard: no direct .vcf
-        // download. The QR modal + the NFC chip are the save path.
-
         function toggleQR() {
             document.getElementById('qrOverlay').classList.toggle('active');
         }
-
-        function generateQR() { /* replaced by direct img tag */ }
-        </script>
+    </script>
 </body>
 </html>

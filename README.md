@@ -1,79 +1,43 @@
-# Generic Card Template (`_template`)
+# Royal Remodel — Daniel Molina
 
-Canonical fallback template for any company that does NOT yet have a per-company template repo (`_template-{slug}`).
+Digital business card. Live at **https://cards.sharkitectdigital.com/royal-remodel/**
 
-## When this template is used
+Built from `sharkitect-cards/_template` on 2026-08-12 — fourth clean run of the standing
+card design standard after Victoria, Maldonado, and NevkaR.
 
-The card-intake n8n workflow (`sdytO7y1ZjrPIanA`) routes to this generic template when the contact's associated HubSpot company has `card_template_slug` empty/null. A "company template prep" task is logged to Supabase so the per-company template can be built later.
+## Files
 
-## Token contract
-
-This template uses TWO sets of tokens.
-
-### Person tokens (8) — supplied per spawn
-
-| Token | Source |
+| File | What it is |
 |---|---|
-| `{{PERSON_FULL_NAME}}` | "Jane Smith" |
-| `{{PERSON_FULL_NAME_DASH}}` | "Jane-Smith" (vCard download filename) |
-| `{{PERSON_FIRST_NAME}}` | "Jane" |
-| `{{PERSON_LAST_NAME}}` | "Smith" |
-| `{{PERSON_TITLE}}` | Job title |
-| `{{PERSON_PHONE_DISPLAY}}` | "(913) 555-1234" |
-| `{{PERSON_PHONE_E164}}` | "+19135551234" |
-| `{{PERSON_EMAIL}}` | "jane@example.com" |
-| `{{PERSON_PHOTO_B64}}` | Optional JPEG base64 (no data: prefix) |
+| `index.html` | The card. Self-contained except Google Fonts (Orbitron + Montserrat). |
+| `contact.vcf` | vCard 3.0 with embedded photo. **The QR and NFC chip both point here.** |
+| `qr-code.png` | 800px on-page QR shown in the modal. Encodes `contact.vcf`, not this page. |
+| `logo.png` | 640px crown-and-shield mark, transparent, palette-quantized. Also the PWA icon. |
+| `manifest.json` | Add-to-home-screen support. |
+| `.gitattributes` | `*.vcf -text` — **required.** vCard 3.0 mandates CRLF; without this git normalizes to LF and some phones reject the file. |
 
-### Company tokens (10) — pulled from HubSpot company + Supabase company_profiles
+## Design standard held
 
-| Token | Source |
-|---|---|
-| `{{COMPANY_NAME}}` | HubSpot `company.name` |
-| `{{COMPANY_TAGLINE}}` | HubSpot `company.tagline` |
-| `{{COMPANY_DESCRIPTOR}}` | HubSpot `company.sharkitect_descriptor` |
-| `{{COMPANY_ACCENT_COLOR}}` | HubSpot `company.sharkitect_accent_color` (hex, e.g. `#C01010`) |
-| `{{COMPANY_ACCENT_RGB}}` | Same color as RGB triplet (e.g. `192, 16, 16`) — used in rgba() |
-| `{{COMPANY_OFFICE_PHONE_DISPLAY}}` | HubSpot `company.phone` formatted "(913) 555-1234" |
-| `{{COMPANY_OFFICE_PHONE_E164}}` | Same phone as "+19135551234" |
-| `{{COMPANY_OFFICE_ADDR}}` | HubSpot `company.address` (single line) |
-| `{{COMPANY_OFFICE_ADDR_MAPS_URL}}` | Full `https://www.google.com/maps/search/?api=1&query=…` URL |
-| `{{COMPANY_WEBSITE_URL}}` | HubSpot `company.website` ("https://...") |
-| `{{COMPANY_WEBSITE_DISPLAY}}` | Same without scheme ("www.example.com") |
+- **One button** — "Save My Contact" — opens the QR modal. No `saveContact()`, no direct
+  `.vcf` anchor, no separate QR button.
+- **Clean palette.** Text is white/neutral. Brand gold appears only on the button, the top
+  hairline, the divider crown, and the QR.
+- Button text is **navy on gold**, not white — white on gold fails contrast and reads washed.
+- **Divider crown** carries the brand's own motif, matching the logo.
+- QR is decode-verified with `cv2.QRCodeDetector` at 100%, 40%, and 25% scale.
 
-### Conditional blocks
+## Fields deliberately omitted, not fabricated
 
-Strip the `<!-- X_START -->` / `<!-- X_END -->` block (inclusive) when the corresponding field is empty:
+- **Website** — `royalremodelkc.com` returned 404 on 2026-08-11 and again on 2026-08-12.
+  A bare `URL:` renders as "homepage" in the saved contact, so it stays out until the site
+  is live. Backfill is a two-line edit (`index.html` + `contact.vcf`), not a rebuild.
+- **Job title** — never stated by Daniel, so not invented.
+- **X / Twitter** — handle unconfirmed (`royalremodel` vs `royalremodelkc`, neither
+  resolvable at build time). Omitted rather than guessed.
+- **Service specifics** — only "Residential Remodeling" is confirmed. No kitchens/baths/
+  whole-home claim until Daniel confirms.
 
-- `OFFICE_PHONE` — strip if `company.phone` is empty
-- `WEBSITE` — strip if `company.website` is empty
-- `OFFICE_ADDRESS` — strip if `company.address` is empty
+## Not to be confused with
 
-## Files in this template
-
-| File | Purpose |
-|---|---|
-| `index.html` | Card markup, fully tokenized |
-| `manifest.json` | PWA manifest, person+company tokens |
-| `logo.svg` | **Placeholder** — n8n fetches `company.logo_url` and overwrites with a square-cropped 512x512 version |
-| `README.md` | This file |
-
-## Logo handling for new companies
-
-Because `card_template_slug` is empty, this is the first card the company is getting. n8n attempts to:
-
-1. Fetch `company.logo_url` from HubSpot (or Supabase `company_profiles.logo_url`)
-2. Square-crop / pad to 512x512 (the `.logo` container is 120x120 with `object-fit: contain`)
-3. Overwrite `logo.svg` (or push as `logo.png` and update the `<img src>`)
-
-If no logo is available, the placeholder square ships and a Supabase task is logged: "Manual logo prep needed for {company}".
-
-## Promoting a generic spawn into a company template
-
-When a company has 1+ live cards using this generic template, manually:
-
-1. Pick the best example card repo as the reference
-2. Square-optimize the logo (1:1 aspect, transparent or matched bg)
-3. Lock in tagline / descriptor / accent color in HubSpot
-4. Create `_template-{company-slug}` and verify byte-exact spawn via `tools/card-spawn.py --dry-run`
-5. Set the company's `card_template_slug` in HubSpot + Supabase
-6. Future cards for that company use the locked template; existing cards stay as-is unless explicitly upgraded
+`sharkitect-cards/daniel-molina-c6t` — Daniel's **previous** card from his time at Fantastic
+Floors. Retired 2026-08-12. That URL is an FF-branded asset and was **not** reused here.
